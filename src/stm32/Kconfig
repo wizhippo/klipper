@@ -20,7 +20,6 @@ config BOARD_DIRECTORY
     string
     default "stm32"
 
-
 ######################################################################
 # Chip selection
 ######################################################################
@@ -135,8 +134,8 @@ config CLOCK_FREQ
     default 168000000 if MACH_STM32F4x5
     default 180000000 if MACH_STM32F446
     default 64000000 if MACH_STM32G0
-    default 400000000 if MACH_STM32H7 # 400Mhz is max Klipper currently supports
-    default 208878528 if MACH_STM32MP157
+    default 400000000 if MACH_STM32H7       # 400Mhz is max Klipper currently supports
+    default 209000000 if MACH_STM32MP157    # 208878528
 
 config FLASH_SIZE
     hex
@@ -305,7 +304,7 @@ choice
         depends on MACH_STM32H7
         select USBSERIAL
     config STM32_SERIAL_USART1
-        bool "Serial (on USART1 PA10/PA9)"  if !MACH_STM32MP1
+        bool "Serial (on USART1 PA10/PA9)"
         select SERIAL
     config STM32_SERIAL_USART1_ALT_PB7_PB6
         bool "Serial (on USART1 PB7/PB6)" if LOW_LEVEL_OPTIONS

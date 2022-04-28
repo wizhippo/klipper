@@ -1,6 +1,6 @@
-// Generic ARM Cortex-M linker script
+// STM32MP157 linker script (based on armcm_link.lds.S )
 //
-// Copyright (C) 2019  Kevin O'Connor <kevin@koconnor.net>
+// Copyright (C) 2021-2026 Kevin O'Connor <kevin@koconnor.net>
 //
 // This file may be distributed under the terms of the GNU GPLv3 license.
 
@@ -11,19 +11,26 @@ OUTPUT_ARCH(arm)
 
 MEMORY
 {
-  rom (rx) : ORIGIN = CONFIG_FLASH_START , LENGTH = CONFIG_FLASH_SIZE
-  ram (rwx) : ORIGIN = CONFIG_RAM_START , LENGTH = CONFIG_RAM_SIZE
+    RETRAM_interrupts (xrw)  : ORIGIN = 0x00000000,  LENGTH = 0x00000600
+    rom (rx) : ORIGIN = CONFIG_FLASH_START , LENGTH = CONFIG_FLASH_SIZE
+    ram (rwx) : ORIGIN = CONFIG_RAM_START , LENGTH = CONFIG_RAM_SIZE
 }
 
 SECTIONS
 {
-    .text : {
+    .vector_table : {
         . = ALIGN(4);
         _text_vectortable_start = .;
-        KEEP(*(.vector_table))
+        KEEP(*(.vector_table))      /* Startup code */
         _text_vectortable_end = .;
+        . = ALIGN(4);
+    } > RETRAM_interrupts
+
+    .text : {
+        . = ALIGN(4);
         *(.text .text.*)
         *(.rodata .rodata*)
+        . = ALIGN(4);
     } > rom
 
     . = ALIGN(4);
