@@ -64,7 +64,6 @@ src-$(CONFIG_MACH_STM32MP1) += stm32/gpioperiph.c stm32/stm32mp1_adc.c
 spi-src-y := stm32/spi.c
 
 spi-src-$(CONFIG_MACH_STM32H7) := stm32/stm32h7_spi.c
-
 spi-src-$(CONFIG_MACH_STM32MP1) := stm32/stm32mp1_spi.c
 
 src-$(CONFIG_HAVE_GPIO_SPI) += $(spi-src-y)

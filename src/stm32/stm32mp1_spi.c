@@ -1,14 +1,14 @@
-// SPI functions on STM32H7
+// SPI functions on STM32MP157
 //
-// Copyright (C) 2019  Kevin O'Connor <kevin@koconnor.net>
+// Copyright (C) 2022  Kevin O'Connor <kevin@koconnor.net>
 //
 // This file may be distributed under the terms of the GNU GPLv3 license.
 
-#include "board/io.h" // readb, writeb
-#include "command.h" // shutdown
-#include "gpio.h" // spi_setup
-#include "internal.h" // gpio_peripheral
-#include "sched.h" // sched_shutdown
+#include "board/io.h"   // readb, writeb
+#include "command.h"    // shutdown
+#include "gpio.h"       // spi_setup
+#include "internal.h"   // gpio_peripheral
+#include "sched.h"      // sched_shutdown
 
 struct spi_info {
     SPI_TypeDef *spi;
@@ -34,18 +34,6 @@ DECL_ENUMERATION("spi_bus", "spi4", __COUNTER__);
 DECL_CONSTANT_STR("BUS_PINS_spi4", "PE13,PE14,PE12");
 #endif
 
-#ifdef SPI5
-DECL_ENUMERATION("spi_bus", "spi5", __COUNTER__);
-DECL_CONSTANT_STR("BUS_PINS_spi5", "PF8,PF9,PF7");
-DECL_ENUMERATION("spi_bus", "spi5a", __COUNTER__);
-DECL_CONSTANT_STR("BUS_PINS_spi5a", "PH7,PF11,PH6");
-#endif
-
-#ifdef SPI6
-DECL_ENUMERATION("spi_bus", "spi6", __COUNTER__);
-DECL_CONSTANT_STR("BUS_PINS_spi6", "PG12,PG14,PG13");
-#endif
-
 static const struct spi_info spi_bus[] = {
     { SPI1, GPIO('Z', 1), GPIO('Z', 2), GPIO('Z', 0), GPIO_FUNCTION(5) },
     { SPI2, GPIO('I', 2), GPIO('I', 3), GPIO('B', 10), GPIO_FUNCTION(5) },
@@ -55,13 +43,6 @@ static const struct spi_info spi_bus[] = {
 #endif
 #ifdef SPI4
     { SPI4, GPIO('E', 13), GPIO('E', 14), GPIO('E', 12), GPIO_FUNCTION(5) },
-#endif
-#ifdef SPI5
-    { SPI5, GPIO('F', 8), GPIO('F', 9), GPIO('F', 7), GPIO_FUNCTION(5) },
-    { SPI5, GPIO('H', 7), GPIO('F', 11), GPIO('H', 6), GPIO_FUNCTION(5) },
-#endif
-#ifdef SPI6
-    { SPI6, GPIO('G', 12), GPIO('G', 14), GPIO('G', 13), GPIO_FUNCTION(5)},
 #endif
 };
 
