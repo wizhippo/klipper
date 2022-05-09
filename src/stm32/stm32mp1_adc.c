@@ -4,15 +4,15 @@
 //
 // This file may be distributed under the terms of the GNU GPLv3 license.
 
-#include "board/irq.h" // irq_save
-#include "board/misc.h" // timer_from_us
-#include "command.h" // shutdown
-#include "compiler.h" // ARRAY_SIZE
-#include "generic/armcm_timer.h" // udelay
-#include "gpio.h" // gpio_adc_setup
-#include "internal.h" // GPIO
-#include "sched.h" // sched_shutdown
-#include "stm32mp1xx.h" // stm32mp1xx
+#include "board/irq.h"      // irq_save
+#include "board/misc.h"     // timer_from_us
+#include "command.h"        // shutdown
+#include "compiler.h"       // ARRAY_SIZE
+#include "generic/armcm_timer.h"    // udelay
+#include "gpio.h"           // gpio_adc_setup
+#include "internal.h"       // GPIO
+#include "sched.h"          // sched_shutdown
+#include "stm32mp1xx.h"     // stm32mp1xx
 
 // Number of samples is 2^OVERSAMPLES_EXPONENT (exponent can be 0-10)
 #define OVERSAMPLES_EXPONENT 3
@@ -164,8 +164,7 @@ gpio_adc_setup(uint32_t pin)
 // Try to sample a value. Returns zero if sample ready, otherwise
 // returns the number of clock ticks the caller should wait before
 // retrying this function.
-uint32_t
-gpio_adc_sample(struct gpio_adc g)
+uint32_t gpio_adc_sample(struct gpio_adc g)
 {
     ADC_TypeDef *adc = g.adc;
     // Conversion ready
@@ -185,16 +184,14 @@ gpio_adc_sample(struct gpio_adc g)
 }
 
 // Read a value; use only after gpio_adc_sample() returns zero
-uint16_t
-gpio_adc_read(struct gpio_adc g)
+uint16_t gpio_adc_read(struct gpio_adc g)
 {
     ADC_TypeDef *adc = g.adc;
     return adc->DR;
 }
 
 // Cancel a sample that may have been started with gpio_adc_sample()
-void
-gpio_adc_cancel_sample(struct gpio_adc g)
+void gpio_adc_cancel_sample(struct gpio_adc g)
 {
     ADC_TypeDef *adc = g.adc;
     irqstatus_t flag = irq_save();

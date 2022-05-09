@@ -77,13 +77,12 @@ spi_setup(uint32_t bus, uint8_t mode, uint32_t rate)
     return (struct spi_config){ .spi = spi, .spi_cr1 = cr1 };
 }
 
-void
-spi_prepare(struct spi_config config)
+void spi_prepare(struct spi_config config)
 {
+    
 }
 
-void
-spi_transfer(struct spi_config config, uint8_t receive_data,
+void spi_transfer(struct spi_config config, uint8_t receive_data,
              uint8_t len, uint8_t *data)
 {
     uint8_t rdata = 0;

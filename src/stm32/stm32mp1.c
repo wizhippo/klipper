@@ -19,8 +19,7 @@
 #define FREQ_PERIPH (CONFIG_CLOCK_FREQ / 4)
 
 // Enable a peripheral clock
-void
-enable_pclock(uint32_t periph_base)
+void enable_pclock(uint32_t periph_base)
 {
     // periph_base determines in which bitfield at wich position to set a bit
     // E.g. D2_AHB1PERIPH_BASE is the adress offset of the given bitfield
@@ -122,8 +121,7 @@ enable_pclock(uint32_t periph_base)
 }
 
 // Check if a peripheral clock has been enabled
-int
-is_enabled_pclock(uint32_t periph_base)
+int is_enabled_pclock(uint32_t periph_base)
 {
     if (periph_base < MCU_APB2_PERIPH_BASE) {
         uint32_t pos = (periph_base - MCU_APB1_PERIPH_BASE) / 0x1000;
@@ -159,26 +157,24 @@ is_enabled_pclock(uint32_t periph_base)
 }
 
 // Return the frequency of the given peripheral clock
-uint32_t
-get_pclock_frequency(uint32_t periph_base)
+uint32_t get_pclock_frequency(uint32_t periph_base)
 {
     return FREQ_PERIPH;
 }
 
 // Enable a GPIO peripheral clock
-void
-gpio_clock_enable(GPIO_TypeDef *regs)
+void gpio_clock_enable(GPIO_TypeDef *regs)
 {
     enable_pclock((uint32_t)regs);
 }
 
 void clock_setup(uint32_t plln, uint32_t pllm, uint32_t pllp, uint32_t pllq, uint32_t pllfracv)
 {
+
 }
 
 // Main entry point - called from armcm_boot.c:ResetHandler()
-void
-armcm_main(void)
+void armcm_main(void)
 {
     SystemInit();       // Run SystemInit() and then restore VTOR
     // SCB->VTOR = (uint32_t)(0x00000000);

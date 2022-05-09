@@ -23,8 +23,7 @@
 #define CR1_FLAGS (USART_CR1_UE | USART_CR1_RE | USART_CR1_TE   \
                    | USART_CR1_RXNEIE)
 
-void
-USARTx_IRQHandler(void)
+void USARTx_IRQHandler(void)
 {
     uint32_t isr = USARTx->ISR;
     if (isr & (USART_ISR_RXNE_RXFNE | USART_ISR_ORE))
@@ -40,8 +39,7 @@ USARTx_IRQHandler(void)
     }
 }
 
-void
-serial_enable_tx_irq(void)
+void serial_enable_tx_irq(void)
 {
     USARTx->CR1 = CR1_FLAGS | USART_CR1_TXEIE;
 }
@@ -52,8 +50,7 @@ void UART_Send(uint8_t ch)
     USARTx->TDR = (uint8_t)ch;
 }
 
-void
-serial_init(void)
+void serial_init(void)
 {
     enable_pclock((uint32_t)USARTx);
 
@@ -69,4 +66,3 @@ serial_init(void)
     gpio_peripheral(GPIO_Tx, GPIO_FUNCTION(8), 0);
 }
 DECL_INIT(serial_init);
-
