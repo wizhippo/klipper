@@ -5,7 +5,7 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 
-import socket
+from CatchIP import get_host_ip
 
 def get_host_ip():
     try:
