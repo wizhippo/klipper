@@ -15,6 +15,6 @@ To begin using Klipper start by
 Klipper is Free Software. See the [license](COPYING) or read the
 [documentation](https://www.klipper3d.org/Overview.html).
 
+---
 
-添加分支 支持 stm32mp157 M4 内核，串口通信方式；
-
+mp157 branch: Support `stm32mp157` `M4` kernel, `UART` communication method;
