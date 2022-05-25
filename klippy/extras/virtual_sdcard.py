@@ -53,7 +53,7 @@ class VirtualSD:
         if self.work_timer is None:
             return False, ""
         return True, "sd_pos=%d" % (self.file_position,)
-    def get_file_list(self, check_subdirs=False):
+    def get_file_list(self, check_subdirs=True):
         if check_subdirs:
             flist = []
             for root, dirs, files in os.walk(
