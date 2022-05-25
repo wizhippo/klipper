@@ -4,18 +4,7 @@
 # Copyright (C) 2018  Eric Callahan <arksine.code@gmail.com>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-
 from CatchIP import get_host_ip
-
-def get_host_ip():
-    try:
-        s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8',80))
-        ip=s.getsockname()[0]
-    finally:
-        s.close()
-
-    return ip
 
 M73_TIMEOUT = 5.
 

@@ -330,7 +330,7 @@ class GCodeDispatch:
         self.request_restart('restart')
     cmd_FIRMWARE_RESTART_help = "Restart firmware, host, and reload config"
     def cmd_FIRMWARE_RESTART(self, gcmd):
-        status = os.system('sh ~/scripts/restart_m4.sh')
+        status = os.system('sh ~/klipper/klippy/restart_m4.sh')
         logging.info("Restart M4: %d", status)
         self.request_restart('firmware_restart')
     def cmd_ECHO(self, gcmd):
