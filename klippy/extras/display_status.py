@@ -4,7 +4,7 @@
 # Copyright (C) 2018  Eric Callahan <arksine.code@gmail.com>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-from CatchIP import get_host_ip
+from . CatchIP import get_host_ip
 
 M73_TIMEOUT = 5.
 
