@@ -10,6 +10,7 @@
 
 #if CONFIG_MACH_STM32H7 // stm32h7 libraries only define IWDG1 and IWDG2
 #define IWDG IWDG1
+#endif
 
 void
 watchdog_reset(void)
@@ -27,28 +28,3 @@ watchdog_init(void)
     IWDG->KR = 0xCCCC;
 }
 DECL_INIT(watchdog_init);
-
-#endif
-
-#if CONFIG_MACH_STM32MP1 
-
-#define IWDG WWDG1
-
-void
-watchdog_reset(void)
-{
-    IWDG->CR = 0xAAAA;
-}
-DECL_TASK(watchdog_reset);
-
-void
-watchdog_init(void)
-{
-    IWDG->CR = 0x5555;
-    IWDG->SR = 0;
-    IWDG->CFR = 0x0FFF; // 410-512ms timeout (depending on stm32 chip)
-    IWDG->CR = 0xCCCC;
-}
-DECL_INIT(watchdog_init);
-
-#endif

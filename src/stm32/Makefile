@@ -35,9 +35,9 @@ endif
 
 # Add source files
 ifneq ($(CONFIG_MACH_STM32MP1),y)
-src-y += stm32/clockline.c
+src-y += stm32/clockline.c stm32/watchdog.c
 endif
-src-y += stm32/watchdog.c stm32/gpio.c generic/crc16_ccitt.c
+src-y += stm32/gpio.c generic/crc16_ccitt.c
 src-y += generic/armcm_boot.c generic/armcm_irq.c generic/armcm_reset.c
 src-$(CONFIG_MACH_STM32F0) += ../lib/stm32f0/system_stm32f0xx.c
 src-$(CONFIG_MACH_STM32F0) += generic/timer_irq.c stm32/stm32f0_timer.c
@@ -62,12 +62,9 @@ src-$(CONFIG_MACH_STM32MP1) += ../lib/stm32mp1/system_stm32mp1xx.c
 src-$(CONFIG_MACH_STM32MP1) += stm32/stm32mp1.c generic/armcm_timer.c
 src-$(CONFIG_MACH_STM32MP1) += stm32/gpioperiph.c stm32/stm32mp1_adc.c
 spi-src-y := stm32/spi.c
-
 spi-src-$(CONFIG_MACH_STM32H7) := stm32/stm32h7_spi.c
 spi-src-$(CONFIG_MACH_STM32MP1) := stm32/stm32mp1_spi.c
-
 src-$(CONFIG_HAVE_GPIO_SPI) += $(spi-src-y)
-
 usb-src-$(CONFIG_HAVE_STM32_USBFS) := stm32/usbfs.c
 usb-src-$(CONFIG_HAVE_STM32_USBOTG) := stm32/usbotg.c
 src-$(CONFIG_USBSERIAL) += $(usb-src-y) stm32/chipid.c generic/usb_cdc.c

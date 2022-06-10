@@ -463,8 +463,7 @@ def git_version():
     if not os.path.exists('.git'):
         logging.debug("No '.git' file/directory found")
         return ""
-#    ver = check_output("git describe --always --tags --long --dirty").strip()
-    ver = check_output("git describe --always --tags --long").strip()
+    ver = check_output("git describe --always --tags --long --dirty").strip()
     logging.debug("Got git version: %s" % (repr(ver),))
     return ver
 
@@ -475,12 +474,11 @@ def build_version(extra, cleanbuild):
         version = "?"
     elif 'dirty' in version:
         cleanbuild = False
-#    if not cleanbuild:
-#        btime = time.strftime("%Y%m%d_%H%M%S")
-#        hostname = socket.gethostname()
-#        version = "%s-%s-%s" % (version, btime, hostname)
-#    return version + extra
-    return version
+    if not cleanbuild:
+        btime = time.strftime("%Y%m%d_%H%M%S")
+        hostname = socket.gethostname()
+        version = "%s-%s-%s" % (version, btime, hostname)
+    return version + extra
 
 # Run "tool --version" for each specified tool and extract versions
 def tool_versions(tools):
