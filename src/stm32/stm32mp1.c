@@ -168,20 +168,12 @@ void gpio_clock_enable(GPIO_TypeDef *regs)
     enable_pclock((uint32_t)regs);
 }
 
-void clock_setup(uint32_t plln, uint32_t pllm, uint32_t pllp, uint32_t pllq, uint32_t pllfracv)
-{
-
-}
-
 // Main entry point - called from armcm_boot.c:ResetHandler()
 void armcm_main(void)
 {
     SystemInit();       // Run SystemInit() and then restore VTOR
     // SCB->VTOR = (uint32_t)(0x00000000);
 
-    // sys_stm32_clock_init(34, 2, 2, 17, 6826); /* 初始化M4内核时钟 */
-    // clock_setup(34, 2, 2, 17, 6826);
-    
     //-----------------------------------------------------
     gpio_out_setup(GPIO('A', 11),1);    // GPIOA_11设置为输出, 高电平; 开启tf-card-led
 
