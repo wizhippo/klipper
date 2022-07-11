@@ -17,6 +17,9 @@ class DisplayStatus:
         gcode = self.printer.lookup_object('gcode')
         gcode.register_command('M73', self.cmd_M73)
         gcode.register_command('M117', self.cmd_M117)
+        gcode.register_command(
+            'SET_DISPLAY_TEXT', self.cmd_SET_DISPLAY_TEXT,
+            desc=self.cmd_SET_DISPLAY_TEXT_help)
     def get_status(self, eventtime):
         self.ip = get_host_ip()
         progress = self.progress
@@ -41,6 +44,9 @@ class DisplayStatus:
     def cmd_M117(self, gcmd):
         msg = gcmd.get_raw_command_parameters() or None
         self.message = msg
+    cmd_SET_DISPLAY_TEXT_help = "Set or clear the display message"
+    def cmd_SET_DISPLAY_TEXT(self, gcmd):
+        self.message = gcmd.get("MSG", None)
 
 def load_config(config):
     return DisplayStatus(config)
