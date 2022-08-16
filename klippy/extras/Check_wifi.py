@@ -8,7 +8,7 @@ def get_wifi_status():
 
     status="testing..."
 
-    filename = '/home/lodge/Astapb/shell/H616/check_wifi.cfg'
+    filename = '/mnt/udisk/check_wifi.cfg'
 
     file=open(filename,'r')         #打开目标文件
 
