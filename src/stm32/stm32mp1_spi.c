@@ -1,16 +1,18 @@
-// SPI functions on STM32MP157
-//
-// Copyright (C) 2022  Kevin O'Connor <kevin@koconnor.net>
-//
-// This file may be distributed under the terms of the GNU GPLv3 license.
+/* SPI functions on STM32MP1
+ *
+ * Copyright (C) 2022  lodge 'Connor <shilong.native@gmail.com>
+ *
+ * This file may be distributed under the terms of the GNU GPLv3 license.
+ */
 
-#include "board/io.h"   // readb, writeb
-#include "command.h"    // shutdown
-#include "gpio.h"       // spi_setup
-#include "internal.h"   // gpio_peripheral
-#include "sched.h"      // sched_shutdown
+#include "board/io.h" // readb, writeb
+#include "command.h"  // shutdown
+#include "gpio.h"     // spi_setup
+#include "internal.h" // gpio_peripheral
+#include "sched.h"    // sched_shutdown
 
-struct spi_info {
+struct spi_info
+{
     SPI_TypeDef *spi;
     uint16_t miso_pin, mosi_pin, sck_pin, function;
 };
@@ -35,14 +37,14 @@ DECL_CONSTANT_STR("BUS_PINS_spi4", "PE13,PE14,PE12");
 #endif
 
 static const struct spi_info spi_bus[] = {
-    { SPI1, GPIO('Z', 1), GPIO('Z', 2), GPIO('Z', 0), GPIO_FUNCTION(5) },
-    { SPI2, GPIO('I', 2), GPIO('I', 3), GPIO('B', 10), GPIO_FUNCTION(5) },
+    {SPI1, GPIO('Z', 1), GPIO('Z', 2), GPIO('Z', 0), GPIO_FUNCTION(5)},
+    {SPI2, GPIO('I', 2), GPIO('I', 3), GPIO('B', 10), GPIO_FUNCTION(5)},
 #ifdef SPI3
-    { SPI3, GPIO('B', 4), GPIO('B', 5), GPIO('B', 3), GPIO_FUNCTION(6) },
-    { SPI3, GPIO('C', 11), GPIO('C', 12), GPIO('C', 10), GPIO_FUNCTION(6) },
+    {SPI3, GPIO('B', 4), GPIO('B', 5), GPIO('B', 3), GPIO_FUNCTION(6)},
+    {SPI3, GPIO('C', 11), GPIO('C', 12), GPIO('C', 10), GPIO_FUNCTION(6)},
 #endif
 #ifdef SPI4
-    { SPI4, GPIO('E', 13), GPIO('E', 14), GPIO('E', 12), GPIO_FUNCTION(5) },
+    {SPI4, GPIO('E', 13), GPIO('E', 14), GPIO('E', 12), GPIO_FUNCTION(5)},
 #endif
 };
 
@@ -54,7 +56,8 @@ spi_setup(uint32_t bus, uint8_t mode, uint32_t rate)
 
     // Enable SPI
     SPI_TypeDef *spi = spi_bus[bus].spi;
-    if (!is_enabled_pclock((uint32_t)spi)) {
+    if (!is_enabled_pclock((uint32_t)spi))
+    {
         enable_pclock((uint32_t)spi);
         gpio_peripheral(spi_bus[bus].miso_pin, spi_bus[bus].function, 1);
         gpio_peripheral(spi_bus[bus].mosi_pin, spi_bus[bus].function, 0);
@@ -70,20 +73,18 @@ spi_setup(uint32_t bus, uint8_t mode, uint32_t rate)
     uint32_t cr1 = SPI_CR1_SPE;
     spi->CFG1 |= (div << SPI_CFG1_MBR_Pos) | (7 << SPI_CFG1_DSIZE_Pos);
     CLEAR_BIT(spi->CFG1, SPI_CFG1_CRCSIZE);
-    spi->CFG2 |= ((mode << SPI_CFG2_CPHA_Pos) | SPI_CFG2_MASTER | SPI_CFG2_SSM
-                   | SPI_CFG2_AFCNTR | SPI_CFG2_SSOE);
+    spi->CFG2 |= ((mode << SPI_CFG2_CPHA_Pos) | SPI_CFG2_MASTER | SPI_CFG2_SSM | SPI_CFG2_AFCNTR | SPI_CFG2_SSOE);
     spi->CR1 |= SPI_CR1_SSI;
 
-    return (struct spi_config){ .spi = spi, .spi_cr1 = cr1 };
+    return (struct spi_config){.spi = spi, .spi_cr1 = cr1};
 }
 
 void spi_prepare(struct spi_config config)
 {
-    
 }
 
 void spi_transfer(struct spi_config config, uint8_t receive_data,
-             uint8_t len, uint8_t *data)
+                  uint8_t len, uint8_t *data)
 {
     uint8_t rdata = 0;
     SPI_TypeDef *spi = config.spi;
@@ -93,18 +94,22 @@ void spi_transfer(struct spi_config config, uint8_t receive_data,
     SET_BIT(spi->CR1, SPI_CR1_SPE);
     SET_BIT(spi->CR1, SPI_CR1_CSTART);
 
-    while (len--) {
+    while (len--)
+    {
         writeb((void *)&spi->TXDR, *data);
-        while((spi->SR & (SPI_SR_RXWNE | SPI_SR_RXPLVL)) == 0);
+        while ((spi->SR & (SPI_SR_RXWNE | SPI_SR_RXPLVL)) == 0)
+            ;
         rdata = readb((void *)&spi->RXDR);
 
-        if (receive_data) {
+        if (receive_data)
+        {
             *data = rdata;
         }
         data++;
     }
 
-    while ((spi->SR & SPI_SR_EOT) == 0);
+    while ((spi->SR & SPI_SR_EOT) == 0)
+        ;
 
     // Clear flags and disable SPI
     SET_BIT(spi->IFCR, 0xFFFFFFFF);
